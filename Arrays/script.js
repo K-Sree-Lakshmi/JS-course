@@ -365,3 +365,13 @@ const amt = accounts.flatMap(acc=>acc.movements).reduce((acc,cur)=> {
   return acc;
 },{deposit:0, withdraw:0})
 console.log(amt)
+
+for(let i=0;i<=60;i++){
+  if(i<10){
+  let num = '0'+i;
+  console.log(Number(num))
+  }
+  else{
+    console.log(i)
+  }
+}
