@@ -67,3 +67,29 @@ btnScrollTo.addEventListener('click',function(){
   window.scrollTo({ left:s1cords.left+window.pageXOffset, top:s1cords.top+window.pageYOffset, behavior:'smooth'})
 
 })
+
+
+const randomInt = (min,max) => Math.floor(Math.random()*(max-min+1)+min);
+
+const randomColor = () => `rgb(${randomInt(0,225)},${randomInt(0,225)},${randomInt(0,225)})`;
+
+console.log(randomColor(0,225))
+
+document.querySelector('.nav__link').addEventListener('click',function(e){
+  this.style.backgroundColor = randomColor()
+  console.log('LINK',e.target,e.currentTarget)
+  // stop propagation
+  // e.stopPropagation()
+})
+
+document.querySelector('.nav__links').addEventListener('click',function(e){
+  this.style.backgroundColor = randomColor()
+  console.log('CONTAINER',e.target,e.currentTarget)
+
+})
+
+document.querySelector('.nav').addEventListener('click',function(e){
+  this.style.backgroundColor = randomColor()
+  console.log('NAV',e.target,e.currentTarget)
+
+},false)
