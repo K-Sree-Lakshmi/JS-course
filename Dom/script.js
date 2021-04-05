@@ -175,3 +175,34 @@ window.addEventListener('scroll', function(){
 //   console.log('NAV',e.target,e.currentTarget)
 
 // },false)
+
+// const obsCallBack = function(entries,observer) {
+//   entries.forEach(entry=>{
+//     console.log(entry)
+//   })
+// }
+// const obsOptions = {
+      // focuses on entire view port
+//   root: null,
+//   // 10%, percentage that we want to have visible in our root.
+//   threshold: [0,0.2]
+// }
+// const observer = IntersectionObserver(obsCallBack, obsOptions)
+// observer.observe(section1)
+
+const headera = document.querySelector('.header');
+const navHeight = nav.getBoundingClientRect().height;
+const stickyNav = function(entries){
+  // destructure syntax
+  const [entry] =  entries;
+  console.log(entry)
+  if(!entry.isIntersecting) nav.classList.add('sticky')
+  else nav.classList.remove('sticky')
+}
+const headerObserver = new IntersectionObserver(stickyNav,{
+  root: null,
+  threshold: 0,
+  rootMargin: `-${navHeight}px`
+})
+
+headerObserver.observe(headera)
