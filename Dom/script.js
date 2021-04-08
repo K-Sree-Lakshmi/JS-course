@@ -111,24 +111,24 @@ tabsContainer.addEventListener('click', function (e) {
   // remove activation
   tabs.forEach(t => t.classList.remove('operations__tab--active'))
   tabsContent.forEach(t => t.classList.remove('operations__content--active'))
-// activate tabs
+  // activate tabs
   clicked.classList.add('operations__tab--active')
 
   // activate content area
   document.querySelector(`.operations__content--${clicked.dataset.tab}`).classList.add('operations__content--active');
 })
 
-const handleHover = function(e){
+const handleHover = function (e) {
 
   console.log(this)
-  if(e.target.classList.contains('nav__link')){
+  if (e.target.classList.contains('nav__link')) {
     const link = e.target;
     const siblings = link.closest('.nav').querySelectorAll('.nav__link');
     const logo = link.closest('.nav').querySelector('img');
-    siblings.forEach(el=> {
-      if(el!== link ) el.style.opacity = this;
+    siblings.forEach(el => {
+      if (el !== link) el.style.opacity = this;
     })
-    logo.style.opacity=this;
+    logo.style.opacity = this;
   }
 }
 // passing an "argument" into handler function
@@ -144,8 +144,8 @@ nav.addEventListener('mouseout',
 
 const initialCoords = section1.getBoundingClientRect();
 console.log(initialCoords)
-window.addEventListener('scroll', function(){
-  if(window.scrollY>initialCoords.top) nav.classList.add('sticky')
+window.addEventListener('scroll', function () {
+  if (window.scrollY > initialCoords.top) nav.classList.add('sticky')
   else nav.classList.remove('sticky')
 
 })
@@ -182,7 +182,7 @@ window.addEventListener('scroll', function(){
 //   })
 // }
 // const obsOptions = {
-      // focuses on entire view port
+// focuses on entire view port
 //   root: null,
 //   // 10%, percentage that we want to have visible in our root.
 //   threshold: [0,0.2]
@@ -192,15 +192,15 @@ window.addEventListener('scroll', function(){
 
 const headera = document.querySelector('.header');
 const navHeight = nav.getBoundingClientRect().height;
-const stickyNav = function(entries){
+const stickyNav = function (entries) {
   // destructure syntax
-  const [entry] =  entries;
+  const [entry] = entries;
   console.log(entry)
 
-  if(!entry.isIntersecting) nav.classList.add('sticky')
+  if (!entry.isIntersecting) nav.classList.add('sticky')
   else nav.classList.remove('sticky')
 }
-const headerObserver = new IntersectionObserver(stickyNav,{
+const headerObserver = new IntersectionObserver(stickyNav, {
   root: null,
   threshold: 0,
   rootMargin: `-${navHeight}px`
@@ -209,43 +209,87 @@ const headerObserver = new IntersectionObserver(stickyNav,{
 headerObserver.observe(headera)
 
 const sectionAll = document.querySelectorAll('.section')
-const revealSection =  function(entries, observer){
+const revealSection = function (entries, observer) {
   const [entry] = entries
   console.log(entry)
-  if(!entry.isIntersecting) return;
+  if (!entry.isIntersecting) return;
   entry.target.classList.remove('section--hidden')
   observer.unobserve(entry.target)
 }
 
-const sectionObserver = new IntersectionObserver(revealSection,{
-  root:null,
+const sectionObserver = new IntersectionObserver(revealSection, {
+  root: null,
   threshold: 0.15
 })
-sectionAll.forEach(function(section){
+sectionAll.forEach(function (section) {
   sectionObserver.observe(section)
-  section.classList.add('section--hidden')
+  // section.classList.add('section--hidden')
 })
 
 // Lazy loading images
 const imgTargets = document.querySelectorAll('img[data-src]')
 
-const loadImg =  function(entries, observer){
+const loadImg = function (entries, observer) {
   const [entry] = entries
   console.log(entry)
-  if(!entry.isIntersecting) return;
-// Replace src with data-src
+  if (!entry.isIntersecting) return;
+  // Replace src with data-src
   entry.target.src = entry.target.dataset.src
 
-  entry.target.addEventListener('load', function(){
+  entry.target.addEventListener('load', function () {
     entry.target.classList.remove('lazy-img')
   })
   observer.unobserve(entry.target)
 }
 
-const imgObserver = new IntersectionObserver(loadImg,{
-  root:null,
+const imgObserver = new IntersectionObserver(loadImg, {
+  root: null,
   threshold: 0,
   rootMargin: '200px'
 })
 
 imgTargets.forEach(img => imgObserver.observe(img))
+
+
+const slides = document.querySelectorAll('.slide')
+// const slider = document.querySelector('.slider')
+const btnLeft = document.querySelector('.slider__btn--left');
+const btnRight = document.querySelector('.slider__btn--right');
+let currentSlide = 0;
+const maxSlides = slides.length;
+// slider.style.transform = 'scale(0.5) translateX(-800px)'
+// slider.style.transform = 'visible'
+
+// As it starts with 0%, 100%, 200% and 300%
+// slides.forEach((s, i) => s.style.transform = `translate(${100 * i}%)`)
+
+const goToSlide = function (slide) {
+  slides.forEach((s, i) => s.style.transform = `translate(${100 * (i - slide)}%)`)
+}
+goToSlide(0);
+
+const nextSlide = function () {
+  if (currentSlide === maxSlides - 1) {
+    currentSlide = 0;
+  }
+  else {
+    currentSlide++;
+  }
+  goToSlide(currentSlide)
+}
+
+const prevSlide = function () {
+  if(currentSlide===0){
+    currentSlide=maxSlides-1
+  }
+  else {
+    currentSlide--;
+  }
+  goToSlide(currentSlide)
+}
+
+btnRight.addEventListener('click', nextSlide)
+btnLeft.addEventListener('click', prevSlide)
+
+  // initially i =0 0-1 = -1
+  // As we want it to be -100%, 0%, 100% and 200%
